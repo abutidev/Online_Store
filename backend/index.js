@@ -129,6 +129,84 @@ app.get('/allproducts',async (req, res)=>{
     res.send(products);
 })
 
+//Schema for creating user
+const Users = mongoose.model('Users',{
+    name:{
+        type: String,
+    },
+    email:{
+        type: String,
+        unique: true,
+    },
+    password:{
+        type: String,
+    },
+    cartData:{
+        type: Object,
+    },
+    date:{
+        type: Date,
+        default: Date.now,
+    }
+})
+
+//Creating endpoint for registering a user
+app.post('/signup', async(req,res) => {
+
+    //checking if user already exits
+    let check = await Users.findOne({email: req.body.email});
+    if(check){
+        return res.status(400).json({success:false,errors: "User already exists"});
+    }
+
+    //creating a new empty cart
+    let cart = {};
+    for(let i = 0; i < 300; i++){
+        cart[i] = 0;
+    }
+
+    //creating a new user with an empty cart created above
+    const user = new Users({
+        name: req.body.username,
+        email: req.body.email,
+        password: req.body.password,
+        cartData: cart,
+    })
+    await user.save();
+
+    
+    const data = {
+        user:{
+            id: user.id
+        }
+    }
+    //generating a token for the new user 
+    const token = jwt.sign(data,'secret_ecom');
+    res.json({success:true,token})
+})
+
+//creating endpoint for user login
+app.post('/login', async(req, res) => {
+    let user = await Users.findOne({email: req.body.email});
+    if(user){
+        const passCompare = req.body.password === user.password;
+        if(passCompare){
+            const data = {
+                user:{
+                    id: user.id
+                }
+            }
+            const token = jwt.sign(data, 'secret_ecom');
+            res.json({success:true, token})
+        }else{
+            res.json({success:false, errors: "Wrong password"});
+        }
+    }else{
+        res.json({success:false, errors: "User not found"});
+    }
+})
+
+
 app.listen(port,(error)=>{
     if(!error){
         console.log("Server is running on port " + port);
@@ -136,4 +214,3 @@ app.listen(port,(error)=>{
         console.log("Error : " + error);
     }
 })
-
