@@ -79,7 +79,7 @@ const Product = mongoose.model("Product",{
     },
 })
 
-//To add or create new products
+//To add new products into our inventory
 
 app.post('/addproduct',async (req,res)=>{
 
@@ -103,18 +103,18 @@ app.post('/addproduct',async (req,res)=>{
     });
     console.log(product);
     await product.save();
-    console.log("Product is saved!");
+    // console.log("Product is saved!");
     res.json({
         success: true,
         name: req.body.name,
     });
 })
 
-//To delete or remove products
+//To delete or remove products from our inventory
 
 app.post('/removeproduct',async (req,res)=>{
     await Product.findOneAndDelete({id:req.body.id});
-    console.log("Product is removed!");
+    // console.log("Product is removed!");
     res.json({
         success: true,
         name: req.body.name,
@@ -125,7 +125,7 @@ app.post('/removeproduct',async (req,res)=>{
 
 app.get('/allproducts',async (req, res)=>{
     let products = await Product.find({});
-    console.log("Here's a list of All products!");
+    // console.log("Here's a list of All products!");
     res.send(products);
 })
 
@@ -210,7 +210,7 @@ app.post('/login', async(req, res) => {
 app.get('/newcollections',async (req, res)=> {
     let products = await Product.find({});
     let newcollection = products.slice(1).slice(-8);
-    console.log("New collection fetched!");
+    // console.log("New collection fetched!");
     res.send(newcollection);
 
 })
@@ -219,7 +219,7 @@ app.get('/newcollections',async (req, res)=> {
 app.get('/popularinwomen',async (req, res)=> {
     let products = await Product.find({category:"women"});
     let popular_in_women = products.slice(0,4);
-    console.log("Popular in women fetched!");
+    // console.log("Popular in women fetched!");
     res.send(popular_in_women);
 })
 
@@ -246,8 +246,10 @@ app.post('/addtocart',fetchUser, async (req, res)=>{
    let userData = await Users.findOne({_id:req.user.id});
    userData.cartData[req.body.itemId] += 1;
    await Users.findOneAndUpdate({_id:req.user.id},{cartData:userData.cartData});    
-   res.send("Added")
-
+   res.json({
+    success: true,
+    message: "Added",
+});
     // console.log(req.body,req.user);
 })
 
@@ -259,7 +261,10 @@ app.post('/removefromcart',fetchUser, async (req, res)=>{
         userData.cartData[req.body.itemId] -= 1;
     }
     await Users.findOneAndUpdate({_id:req.user.id}, {cartData:userData.cartData});
-    res.send("Removed")
+    res.json({
+        success: true,
+       message: "Removed!",
+    });
 })
 
 //endpoint to get cartData whenever user logs in

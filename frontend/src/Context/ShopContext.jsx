@@ -37,9 +37,6 @@ const ShopContextProvider = (props) => {
         .then((data) => setAllProduct(data));
 
 
-        
-
-
         if(authToken){
             fetch('http://localhost:4000/getcart',{
                 method: 'POST',
@@ -59,10 +56,6 @@ const ShopContextProvider = (props) => {
     const addToCart = (itemId)=>{
         setCartItems((prev) => ({...prev,[itemId]:prev[itemId]+1}));
 
-
-
-
-
         // if(localStorage.getItem('auth_token')){
         //     fetch('http://localhost:4000/addtocart',{
         //         method: 'POST',
@@ -73,15 +66,13 @@ const ShopContextProvider = (props) => {
         //             'auth_token': `${localStorage.getItem('auth_token')}`,
         //             'Content-Type': 'application/json',
         //         },
-                
-        // const authToken = localStorage.getItem('auth_token');
 
 
         if(authToken){
             fetch('http://localhost:4000/addtocart',{
                 method: 'POST',
                 headers:{
-                    'Accept' :'application/json',
+                    Accept :'application/form-data',
                     'auth_token': `${authToken}`,
                 
                     'Content-Type': 'application/json',
@@ -99,14 +90,12 @@ const ShopContextProvider = (props) => {
     const removeFromCart = (itemId)=>{
 
         setCartItems((prev) => ({...prev,[itemId]:prev[itemId]-1}));
-        // const authToken = localStorage.getItem('auth_token');
-
 
         if(authToken){
             fetch('http://localhost:4000/removefromcart',{
                 method: 'POST',
                 headers:{
-                    'Accept' :'application/json',
+                    Accept :'application/form-data',
                     'auth_token': `${authToken}`,
                 
                     'Content-Type': 'application/json',
