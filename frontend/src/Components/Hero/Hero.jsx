@@ -9,7 +9,7 @@ import hero_image from '../Assets/hero_image.png';
 const Hero = () => {
 
   return (
-    <div className="hero">
+    <div className="hero" data-testid="hero">
       <div className="hero-left">       
         <h2>NEW ARRIVALS ONLY</h2>
             <div>

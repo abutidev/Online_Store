@@ -7,8 +7,8 @@ import remove_icon from '../Assets/cart_cross_icon.png'
 const CartItems = () => {
     const {getTotalCartAmount, all_product, cartItems, removeFromCart } = React.useContext(ShopContext);
     return (
-        <div className="cartitems">
-            <div className="cartitems-format-main">
+        <div className="cartitems" >
+            <div className="cartitems-format-main" data-testid="cartitems-header">
                 <p>Products</p>
                 <p>Title</p>
                 <p>Price</p>
@@ -22,14 +22,14 @@ const CartItems = () => {
                 if (cartItems[e.id] > 0) {
                     return (
                         <div>
-                            <div className="cartitems-format cartitems-format-main">
+                            <div className="cartitems-format cartitems-format-main" data-testid="cartitems-info" key={e.id}>
                                 <img src={e.image} alt="" className="carticon-product-icon" />
                                 <p>{e.name}</p>
                                 <p>${e.new_price}</p>
                                 <button className="cartitems-quantity">{cartItems[e.id]}</button>
                                 <p>${e.new_price * cartItems[e.id]}</p>
-                                {/* <button className='cartitems-remove-icon' src={remove_icon} onClick={() => { removeFromCart(e.id) }}>Remove</button> */}
-                                <img className='cartitems-remove-icon' src={remove_icon} onClick={() => { removeFromCart(e.id) }} alt="" />
+
+                                <img className='cartitems-remove-icon' src={remove_icon} onClick={() => { removeFromCart(e.id) }} alt="remove-button" />
                             </div>
                             <hr />
                         </div>
@@ -37,8 +37,8 @@ const CartItems = () => {
                 }
                 return null;
             })}
-        <div className="cartitems-down">
-            <div className="cartitems-total">
+        <div className="cartitems-down ">
+            <div className="cartitems-total"  >
                 <h1>Cart Totals</h1>
                 <div>
                     <div className="cartitems-total-item">
@@ -51,7 +51,7 @@ const CartItems = () => {
                         <p>Free</p>
                     </div>
                     <hr />
-                    <div className="cartitems-total-item">
+                    <div className="cartitems-total-item" data-testid="cartitems-totals">
                         <h3>Total</h3>
                         <h3>${getTotalCartAmount()}</h3>
                     </div>
