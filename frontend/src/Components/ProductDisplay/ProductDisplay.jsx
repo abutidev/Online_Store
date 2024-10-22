@@ -14,14 +14,14 @@ const ProductDisplay = (props) => {
     return (
         <div className="productdisplay">
             <div className="productdisplay-left">
-                <div className="productdisplay-img-list">
-                    <img src={product.image} alt="" />
-                    <img src={product.image} alt="" />
-                    <img src={product.image} alt="" />
-                    <img src={product.image} alt="" />
+                <div className="productdisplay-img-list" >
+                    <img src={product.image} alt="" data-testid="product-images" />
+                    <img src={product.image} alt="" data-testid="product-images"/>
+                    <img src={product.image} alt="" data-testid="product-images"/>
+                    <img src={product.image} alt="" data-testid="product-images"/>
                 </div>
                 <div className="productdisplay-img">
-                    <img className="productdisplay-main-img" src={product.image} alt="" />
+                    <img className="productdisplay-main-img" src={product.image} alt="" data-testid ="main-product-image" />
                 </div>
             </div>
             <div className="productdisplay-right">
@@ -59,14 +59,6 @@ const ProductDisplay = (props) => {
                 <button onClick={()=>{addToCart(product.id)}}> ADD TO CART</button>
                 <p className="productdisplay-right-category"><span>Category :</span>Women , T-Shirt, Crop Top</p>
                 <p className="productdisplay-right-category"><span>Tags :</span>Modern, Latest</p>
-                
-                 {/* <div className="productdisplay-right-payment">
-                    <img src="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" alt="" />
-                    <img src="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" alt="" />
-                    <img src="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" alt="" />
-                    <img src="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" alt="" /></div>
-
-                </div> */}
 
             </div>
 

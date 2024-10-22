@@ -1,7 +1,8 @@
 import React from 'react';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import NewCollections from '../NewCollections/NewCollections';
+import Popular from '../Popular/Popular';
+
 
 
 // Mock the Item component
@@ -11,7 +12,7 @@ jest.mock('../Item/Item', () => {
   };
 });
 
-describe('NewCollections Component', () => {
+describe('Popular Component', () => {
   beforeEach(() => {
     // Clear all mocks before each test
     jest.clearAllMocks();
@@ -26,17 +27,17 @@ const mockProducts = [
   ];
 
 
-  test('renders new collections when API call is successful', async () => {
+  test('renders popular when API call is successful', async () => {
     
 
     global.fetch.mockResolvedValueOnce({
       json: jest.fn().mockResolvedValue(mockProducts),
     });
 
-    render(<NewCollections />);
+    render(<Popular />);
 
     // Check if the title is rendered
-    expect(screen.getByText('NEW COLLECTIONS')).toBeInTheDocument();
+    expect(screen.getByText('POPULAR IN WOMEN')).toBeInTheDocument();
 
     // Wait for the items to be rendered
     await waitFor(() => {
@@ -53,18 +54,15 @@ test('renders error message when API call fails', async () => {
 
     // Suppress the console.error during this test to avoid unwanted logs
     jest.spyOn(console, 'error').mockImplementation(() => {});
+  
+
 
     await act(async () => {
-        render(<NewCollections />);
+        render(<Popular />);
       });
-
-   
   
     // Check if the title is still rendered (if it should be visible even when there's an error)
-    expect(screen.getByText('NEW COLLECTIONS')).toBeInTheDocument();
-  
-    // // Wait for the component to render the error state
-    // await waitFor(() => {
+    expect(screen.getByText('POPULAR IN WOMEN')).toBeInTheDocument();
 
     // Check to ensure that there's no products if and the API fails to load
     expect(screen.queryByText('Item 1')).not.toBeInTheDocument();

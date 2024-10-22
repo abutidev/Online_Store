@@ -8,11 +8,16 @@ import Item from "../Item/Item";
 const Popular = () => {
 
    const[data_product, setPopularProducts] = useState([]);
+   const [error, setError] = useState(false);
    
    useEffect(() => {
     fetch('http://localhost:4000/popularinwomen')
     .then((res) => res.json())
-    .then((data) => setPopularProducts(data));  
+    .then((data) => setPopularProducts(data))  
+    .catch((error) => {
+      console.error('Error fetching Popular:', error);
+      setError(true);
+    });
    },[]);
 
     return (
