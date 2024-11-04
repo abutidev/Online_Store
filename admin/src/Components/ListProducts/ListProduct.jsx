@@ -25,6 +25,12 @@ const ListProduct = () => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({ id: id }),
+        }).then((response) => response.json()).then((data) => {
+            if(data.success){
+                alert('Product removed successfully')
+            }else{
+                alert('Failed to removed product')
+            }
         });
         await fetchInfo();
     };
@@ -42,10 +48,10 @@ const ListProduct = () => {
         </div>
         <div className="listproduct-allproducts">
             <hr className="listproduct-hr" />
-            {allproducts.map((product,index) => {
+            {allproducts.map((product) => {
                 return <>
-                <div key={index} className="listproduct-format-main listproduct-format">
-                        <img src={product.image} alt="" className="listproduct-product-img" />
+                <div key={product.id} className="listproduct-format-main listproduct-format">
+                        <img src={product.image} alt="product-image" className="listproduct-product-img" />
                         <p>{product.name}</p>
                         <p>R{product.old_price}</p>
                         <p>R{product.new_price}</p>
