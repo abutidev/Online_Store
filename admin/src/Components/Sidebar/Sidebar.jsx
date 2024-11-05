@@ -10,13 +10,13 @@ const Sidebar = () => {
     <div className="sidebar" data-testid="Sidebar">
         <Link to={'/addproduct'} style={{textDecoration:"none"}}>
             <div className="sidebar-item">
-                <img src={add_product_icon} alt="add_product" className="add-product"/>
+                <img src={add_product_icon} alt="add_product"/>
                 <p>Add Product</p>
             </div> 
         </Link>
         <Link to={'/listproduct'} style={{textDecoration:"none"}}>
             <div className="sidebar-item">
-                <img src={list_product_icon} alt="list_product" className="list-product"/>
+                <img src={list_product_icon} alt="list_product" />
                 <p>Product List</p>
             </div> 
         </Link>

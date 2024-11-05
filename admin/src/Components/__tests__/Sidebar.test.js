@@ -34,7 +34,7 @@ describe('Sidebar Component', () => {
         expect(addProductLink).toHaveAttribute('href', '/addproduct');
         
         const addProductImage = screen.getByAltText('add_product');
-        expect(addProductImage).toHaveClass('add-product');
+        expect(addProductImage).toHaveAttribute('src','test-file-stub');
         
         const addProductText = screen.getByText('Add Product');
         expect(addProductText).toBeInTheDocument();
@@ -44,7 +44,7 @@ describe('Sidebar Component', () => {
         expect(listProductLink).toHaveAttribute('href', '/listproduct');
         
         const listProductImage = screen.getByAltText('list_product');
-        expect(listProductImage).toHaveClass('list-product');
+        expect(listProductImage).toHaveAttribute('src','test-file-stub' );
         
         const listProductText = screen.getByText('Product List');
         expect(listProductText).toBeInTheDocument();
