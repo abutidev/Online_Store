@@ -12,7 +12,7 @@ test('should render Footer component', () => {
     
 
     expect(footerBoxElement).toBeInTheDocument();
-    expect(footerBoxElement.textContent).toContain("SHOPPER");
+    expect(footerBoxElement.textContent).toContain("SHOPALOT");
     expect(footerBoxElement.textContent).toContain("Company");
     expect(footerBoxElement.textContent).toContain("Products");
     expect(footerBoxElement.textContent).toContain("Offices");

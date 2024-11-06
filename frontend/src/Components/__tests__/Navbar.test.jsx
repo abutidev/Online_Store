@@ -55,7 +55,7 @@ afterEach(() => {
 
 test('renders Navbar component', () => {
     renderNavbar();
-    expect(screen.getByText('SHOPPER')).toBeInTheDocument();
+    expect(screen.getByText('SHOPALOT')).toBeInTheDocument();
 });
 
 test('renders all navigation links', () => {

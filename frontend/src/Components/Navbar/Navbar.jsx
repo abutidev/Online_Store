@@ -25,7 +25,7 @@ const Navbar = () => {
 
             <div className='nav-logo'>
                 <img src={logo} alt="" />
-                <p>SHOPPER</p>
+                <p>SHOPALOT</p>
             </div>
             <img className='nav-dropdown'  onClick={dropdown_toggle} src={nav_dropdown} alt="dropdown-click" />
             <ul ref={menuRef} className='nav-menu'>

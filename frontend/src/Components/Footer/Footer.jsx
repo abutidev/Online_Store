@@ -11,7 +11,7 @@ const Footer = () => {
         <div className="footer" data-testid="footer">
             <div className="footer-logo">
                 <img src={footer_logo} alt="" />
-                <p>SHOPPER</p>
+                <p>SHOPALOT</p>
             </div>
             <ul className="footer-links">
                 <li>Company</li>
