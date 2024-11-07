@@ -5,9 +5,10 @@ import { Routes,Route } from "react-router-dom";
 import AddProduct from "../../Components/AddProduct/AddProduct";
 import ListProduct from "../../Components/ListProducts/ListProduct";
 
+
 const Admin = () => {
   return (
-    <div className="admin">
+    <div className="admin" data-testid="admin" >
       <Sidebar />
       <Routes>
         <Route path="/addproduct" element={<AddProduct/>} />
@@ -18,3 +19,4 @@ const Admin = () => {
 };
 
 export default Admin
+

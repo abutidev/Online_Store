@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import React, { createContext, useState } from "react";
-// import all_product from "../Components/Assets/all_product";
 
 
 
@@ -30,11 +29,16 @@ const ShopContextProvider = (props) => {
     const [all_product,setAllProduct] = useState([]);
     const [cartItems,setCartItems] = useState(getDefaultCart());
     const authToken = localStorage.getItem('auth_token');
+    const [error, setError] = useState(false);
     
     useEffect( () =>{
         fetch('http://localhost:4000/allproducts')
         .then((res) => res.json())
-        .then((data) => setAllProduct(data));
+        .then((data) => setAllProduct(data))
+        .catch((error) => {
+            console.error('API error:', error);
+            setError(true);
+        });
 
 
         if(authToken){
@@ -55,18 +59,6 @@ const ShopContextProvider = (props) => {
    
     const addToCart = (itemId)=>{
         setCartItems((prev) => ({...prev,[itemId]:prev[itemId]+1}));
-
-        // if(localStorage.getItem('auth_token')){
-        //     fetch('http://localhost:4000/addtocart',{
-        //         method: 'POST',
-        //         headers:{
-        //             Accept :'application/json',
-        //             // `${localStorage.getItem('auth_token')}`,
-
-        //             'auth_token': `${localStorage.getItem('auth_token')}`,
-        //             'Content-Type': 'application/json',
-        //         },
-
 
         if(authToken){
             fetch('http://localhost:4000/addtocart',{

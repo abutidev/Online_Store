@@ -9,3 +9,5 @@ RUN npm ci
 COPY . .
 
 CMD ["npm", "run", "dev" ]
+
+USER node
