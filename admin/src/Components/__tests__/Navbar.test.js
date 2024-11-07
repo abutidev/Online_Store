@@ -7,7 +7,7 @@ import Navbar from '../Navbar/Navbar';
 jest.mock('../Navbar/Navbar.css', () => ({}));
 
   
-jest.mock('../../assets/nav-logo.svg', () => 'test-file-stub');
+jest.mock('../../assets/new_logo.png', () => 'test-file-stub');
 jest.mock('../../assets/nav-profile.svg', () => 'test-file-stub');
 
 

@@ -73,8 +73,8 @@ describe('ListProduct Component', () => {
                 expect(screen.getByText('Test Product 2')).toBeInTheDocument();
                 
                 // Check if prices are rendered correctly
-                expect(screen.getByText('R100')).toBeInTheDocument();
-                expect(screen.getByText('R80')).toBeInTheDocument();
+                expect(screen.getByText('$100')).toBeInTheDocument();
+                expect(screen.getByText('$80')).toBeInTheDocument();
                 
                 // Check if categories are rendered
                 expect(screen.getByText('men')).toBeInTheDocument();
