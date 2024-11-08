@@ -79,6 +79,20 @@ const Product = mongoose.model("Product",{
     },
 })
 
+
+
+//response handler utility
+const createResponse = (success, message, data = null, statusCode = 200) => {
+  return {
+    success,
+    statusCode,
+    message,
+    data,
+    timestamp: new Date().toISOString()
+  };
+};
+
+
 //To add new products into our inventory
 
 app.post('/addproduct',async (req,res)=>{
@@ -153,10 +167,22 @@ const Users = mongoose.model('Users',{
 //Creating endpoint for registering a user
 app.post('/signup', async(req,res) => {
 
+
+
+
+
     //checking if user already exits
     let check = await Users.findOne({email: req.body.email});
     if(check){
-        return res.status(400).json({success:false,errors: "User already exists"});
+        // return res.status(400).json({success:false,errors: "User already exists"});
+        return res.status(401).json(
+            createResponse(
+                false,
+                'User already exists',
+                {email : req.body.email},
+                401
+            )
+        );
     }
 
     //creating a new empty cart
@@ -182,7 +208,25 @@ app.post('/signup', async(req,res) => {
     }
     //generating a token for the new user 
     const token = jwt.sign(data,'secret_ecom');
-    res.json({success:true,token})
+    // res.json({success:true,token})
+
+
+    return res.status(201).json(
+        createResponse(
+            true,
+            'User registered successfully',
+            {
+                user: {
+                    id: user.id,
+                    username: user.name,
+                    email: user.email,
+                    createdAt: user.createdAt,
+                }
+            },
+            token,
+            201
+        )
+    );
 })
 
 //creating endpoint for user login
@@ -196,13 +240,45 @@ app.post('/login', async(req, res) => {
                     id: user.id
                 }
             }
-            const token = jwt.sign(data, 'secret_ecom');
-            res.json({success:true, token})
+            // const token = jwt.sign(data, 'secret_ecom');
+            return res.status(201).json(
+                createResponse(
+                    true,
+                    'User logged in successfully',
+                    {
+                        user: {
+                            id: user.id,
+                            username: user.name,
+                            email: user.email,
+                        }
+                    },                    
+                    201
+                    
+                )
+            );
+            
         }else{
-            res.json({success:false, errors: "Wrong password"});
+           
+            return res.status(401).json(
+                createResponse(
+                    false,
+                    'Wrong password',
+                    {password : req.body.password},
+                    401
+                )
+            );
         }
     }else{
-        res.json({success:false, errors: "User not found"});
+
+        return res.status(401).json(
+            createResponse(
+                false,
+                'User not found',
+                {email : req.body.email},
+                401
+            )
+        );
+        
     }
 })
 
