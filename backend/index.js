@@ -88,7 +88,6 @@ const createResponse = (success, message, data = null, statusCode = 200) => {
     statusCode,
     message,
     data,
-    timestamp: new Date().toISOString()
   };
 };
 
@@ -117,30 +116,70 @@ app.post('/addproduct',async (req,res)=>{
     });
     console.log(product);
     await product.save();
-    // console.log("Product is saved!");
-    res.json({
-        success: true,
-        name: req.body.name,
-    });
+
+
+    return res.status(201).json(
+        createResponse(
+            true,
+            'Product successfully saved',
+            {
+                product:{
+                    id: product.id,
+                    name: product.name,
+                    image: product.image,
+                    category: product.category,
+                    new_price: product.new_price,
+                    old_price: product.old_price,
+                },
+            },                    
+            201
+            
+        )
+    )
 })
 
 //To delete or remove products from our inventory
-
 app.post('/removeproduct',async (req,res)=>{
     await Product.findOneAndDelete({id:req.body.id});
-    // console.log("Product is removed!");
-    res.json({
-        success: true,
-        name: req.body.name,
-    })
+  
+
+
+    return res.status(201).json(
+        createResponse(
+            true,
+            'Product successfully removed',
+            {
+                product:{
+                    id: req.body.id,
+                    name: req.body.name
+
+                },
+            },                    
+            201
+            
+        )
+    )
+
+
+
 })
 
 //To get all products
 
 app.get('/allproducts',async (req, res)=>{
     let products = await Product.find({});
-    // console.log("Here's a list of All products!");
-    res.send(products);
+    // res.send(products);
+    return res.status(200).json(
+        createResponse(
+            true,
+            'All products successfully retrieved',
+            {
+                Products: products
+            },                    
+            200
+            
+        )
+    );
 })
 
 //Schema for creating user
@@ -167,14 +206,10 @@ const Users = mongoose.model('Users',{
 //Creating endpoint for registering a user
 app.post('/signup', async(req,res) => {
 
-
-
-
-
     //checking if user already exits
     let check = await Users.findOne({email: req.body.email});
     if(check){
-        // return res.status(400).json({success:false,errors: "User already exists"});
+        
         return res.status(401).json(
             createResponse(
                 false,
@@ -208,7 +243,7 @@ app.post('/signup', async(req,res) => {
     }
     //generating a token for the new user 
     const token = jwt.sign(data,'secret_ecom');
-    // res.json({success:true,token})
+  
 
 
     return res.status(201).json(
@@ -223,8 +258,9 @@ app.post('/signup', async(req,res) => {
                     createdAt: user.createdAt,
                 }
             },
+            201,
             token,
-            201
+            
         )
     );
 })
@@ -304,14 +340,33 @@ app.get('/popularinwomen',async (req, res)=> {
 const fetchUser = async(req, res, next) => {
     const token = req.header('auth_token');
     if(!token){
-        res.status(401).send({errors: "Please authenticate using a valid token"})
+    
+        return res.status(401).json(
+            createResponse(
+                false,
+                'Please authenticate using a valid token',
+                {Token : token},                    
+                401     
+            )
+        );  
+
     }else{ 
         try{
             const data = jwt.verify(token, 'secret_ecom');
             req.user = data.user;
             next();
         }catch(error){
-            res.status(401).send({errors: "Please authenticate using a valid token"})
+
+            return res.status(401).json(
+                createResponse(
+                    false,
+                    'Please authenticate using a valid token',
+                    {Token : token},                    
+                    401     
+                )
+
+            );
+
         }
     }
 }
@@ -322,11 +377,21 @@ app.post('/addtocart',fetchUser, async (req, res)=>{
    let userData = await Users.findOne({_id:req.user.id});
    userData.cartData[req.body.itemId] += 1;
    await Users.findOneAndUpdate({_id:req.user.id},{cartData:userData.cartData});    
-   res.json({
-    success: true,
-    message: "Added",
-});
-    // console.log(req.body,req.user);
+  
+    return res.status(201).json(
+        createResponse(
+            true,
+            'Added',
+            {
+                product:{
+                    productId : req.body.itemId
+                },
+            },                    
+            201
+            
+        )
+    );
+
 })
 
 //endpoint to remove items from cartData
@@ -337,17 +402,43 @@ app.post('/removefromcart',fetchUser, async (req, res)=>{
         userData.cartData[req.body.itemId] -= 1;
     }
     await Users.findOneAndUpdate({_id:req.user.id}, {cartData:userData.cartData});
-    res.json({
-        success: true,
-       message: "Removed!",
-    });
+
+    return res.status(200).json(
+        createResponse(
+            true,
+            'Removed!',
+            {
+                product:{
+                    productId : req.body.itemId
+                },
+            },                    
+            200
+            
+        )
+    );
+
+
+
 })
 
 //endpoint to get cartData whenever user logs in
 app.post('/getcart',fetchUser,async (req, res) => {
     console.log("getCart");
     let userData = await Users.findOne({_id:req.user.id});
-    res.json(userData.cartData);
+    // res.json(userData.cartData);
+    return res.status(200).json(
+        createResponse(
+            true,
+            'Cart data successfully retrieved',
+            {
+                User:{
+                    cart : userData.cartData
+                },
+            },                    
+            200
+            
+        )
+    );
 })
 
 app.listen(port,(error)=>{
