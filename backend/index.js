@@ -256,10 +256,11 @@ app.post('/signup', async(req,res) => {
                     username: user.name,
                     email: user.email,
                     createdAt: user.createdAt,
-                }
+                },
+                Token: token
             },
             201,
-            token,
+            
             
         )
     );
@@ -276,7 +277,7 @@ app.post('/login', async(req, res) => {
                     id: user.id
                 }
             }
-            // const token = jwt.sign(data, 'secret_ecom');
+            const token = jwt.sign(data, 'secret_ecom');
             return res.status(201).json(
                 createResponse(
                     true,
@@ -286,7 +287,8 @@ app.post('/login', async(req, res) => {
                             id: user.id,
                             username: user.name,
                             email: user.email,
-                        }
+                        },
+                        Token: token
                     },                    
                     201
                     
@@ -425,7 +427,6 @@ app.post('/removefromcart',fetchUser, async (req, res)=>{
 app.post('/getcart',fetchUser,async (req, res) => {
     console.log("getCart");
     let userData = await Users.findOne({_id:req.user.id});
-    // res.json(userData.cartData);
     return res.status(200).json(
         createResponse(
             true,
