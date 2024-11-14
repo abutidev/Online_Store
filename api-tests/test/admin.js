@@ -42,16 +42,6 @@ describe('Admin' , () =>{
         }
 
 
-        // {
-        //     "success": true,
-        //     "statusCode": 201,
-        //     "message": "Product successfully removed",
-        //     "data": {
-        //         "product": {
-        //             "id": "101"
-        //         }
-        //     }
-        // }
         return request
             .post('removeproduct')
             .send(data)

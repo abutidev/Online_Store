@@ -54,9 +54,14 @@ const ShopContextProvider = (props) => {
                 body:"",   
                 }).then((res) => res.json()).then((data)=>{
                     // setCartItems(data);
-                    setCartItems(data.data.User.cart);
+                    // setCartItems(data.data.User.cart);
 
-
+                    if (data.data && data.data.User && data.data.User.cart) {
+                        setCartItems(data.data.User.cart);
+                      } else {
+                        console.error('Invalid response structure:', data);
+                        setCartItems(getDefaultCart());
+                    }
                 })
             }
     },[]);

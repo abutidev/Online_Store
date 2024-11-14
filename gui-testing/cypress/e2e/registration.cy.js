@@ -39,6 +39,52 @@ describe('User registration flow', () => {
         cy.contains('button', 'Logout').should('be.visible');
     })
 
+    it.only('registering an existing user', () => {
+
+
+        const data = {
+            username:`checking user`,
+            password:'123456789',
+            email:`tothulo022@gmail.com`
+        }
+
+        //Step 1: Navigate to the login page
+        cy.contains('button', 'Login').should('be.visible');
+        cy.contains('button', 'Login').click();
+        cy.url().should('include', '/login');
+
+
+        //Step 2: fill in the necessary details
+        
+        cy.contains('span', 'Click here').should('be.visible');
+        cy.contains('span', 'Click here').click();
+        cy.wait(500)
+        cy.get('input[name="email"]')
+            .should('be.visible')
+            .and('have.attr', 'placeholder', 'Email Address');
+        cy.get('input[name="password"]')
+            .should('be.visible')
+            .and('have.attr', 'placeholder', 'Password');
+
+        cy.get('input[name="email"]').type(data.email);
+        cy.get('input[name="username"]').type(data.username);
+        cy.get('input[name="password"]').type(data.password);
+        cy.contains('button', 'Continue').should('be.visible');
+
+        
+        // step3 : Assert
+        cy.intercept('POST', 'http://localhost:4000/signup').as('signUpRequest');
+  
+        cy.contains('button','Continue').click();
+
+        cy.wait('@signUpRequest', { timeout: 10000 }).then((interception) => {
+            
+            expect(interception.response.statusCode).to.eq(401); 
+            expect(interception.response.body).to.have.property('message', 'User already exists');
+            expect(interception.response.body.data.email).to.exist;   
+        });
+    })
+
 
 
 })
