@@ -55,9 +55,19 @@ describe('ListProduct Component', () => {
     
         test('successfully loads and displays products', async () => {
             // Mock the fetch for getting all products
-            fetch.mockImplementationOnce(() => 
+            // fetch.mockImplementationOnce(() => 
+            //     Promise.resolve({
+            //         json: () => Promise.resolve(mockProducts)
+            //     })
+            // );
+
+            fetch.mockImplementationOnce(() =>
                 Promise.resolve({
-                    json: () => Promise.resolve(mockProducts)
+                    json: () => Promise.resolve({
+                        data: {
+                            Products: mockProducts // Now wrapped in data.Products structure
+                        }
+                    })
                 })
             );
         
@@ -96,7 +106,11 @@ describe('ListProduct Component', () => {
             fetch
                 .mockImplementationOnce(() => 
                     Promise.resolve({
-                        json: () => Promise.resolve(mockProducts)
+                        json: () => Promise.resolve({
+                            data: {
+                                Products: mockProducts 
+                            }
+                        })
                     })
                 )
               // Mock the remove product API call
@@ -108,10 +122,17 @@ describe('ListProduct Component', () => {
               // Mock the refresh products fetch
                 .mockImplementationOnce(() => 
                     Promise.resolve({
-                        json: () => Promise.resolve(mockProducts.filter(p => p.id !== 1))
+                        json: () => Promise.resolve({
+                            data: {
+                                Products: mockProducts.filter(p => p.id !== 1) 
+                            }
+                        })
                     })
                 );
         
+
+
+
             render(<ListProduct />);
         
             // Wait for initial products to load
@@ -147,10 +168,17 @@ describe('ListProduct Component', () => {
 
             fetch.mockImplementationOnce(() => 
                 Promise.resolve({
-                    json: () => Promise.resolve([]) // Return empty array on failure
+                    json: () => Promise.resolve({
+                        data: {
+                                Products: []
+                            }
+                    }) // Return empty array on failure
                 })
             );
           
+            
+
+
             render(<ListProduct />);
         
             await waitFor(() => {
@@ -164,7 +192,11 @@ describe('ListProduct Component', () => {
             fetch
                 .mockImplementationOnce(() => 
                     Promise.resolve({
-                        json: () => Promise.resolve(mockProducts)
+                        json: () => Promise.resolve({
+                            data: {
+                                Products: mockProducts 
+                            }
+                        })
                     })
                 )
                 // Mock failed product removal
@@ -176,7 +208,11 @@ describe('ListProduct Component', () => {
                 // Mock successful refresh fetch
                 .mockImplementationOnce(() => 
                     Promise.resolve({
-                        json: () => Promise.resolve(mockProducts)
+                        json: () => Promise.resolve({
+                            data: {
+                                Products: mockProducts 
+                            }
+                        })
                     })
                 );
 
