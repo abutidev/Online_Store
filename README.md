@@ -1,4 +1,4 @@
-# Shopper-App  
+# ShopAlot  
 A MERN stack web app for seamless e-commerce with features like user authentication, cart management, and admin controls. This app was built to mainly showcase my testing skills in API testing as well as GUI testing.
 
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
