@@ -31,8 +31,8 @@ describe("LoginSignup Component", () => {
         });
 
         // Mock the window location replace
-        delete window.location; // Delete the original location object
-        window.location = { replace: mockLocationReplace }; // Assign a new location object
+        delete window.location; 
+        window.location = { replace: mockLocationReplace }; 
     });
 
     afterEach(() => {
@@ -53,7 +53,13 @@ describe("LoginSignup Component", () => {
         fetch.mockImplementationOnce(() =>
             Promise.resolve({
                 ok: true,
-                json: () => Promise.resolve({ success: true, token: "dummy_token" })
+                json: () => Promise.resolve({ 
+                    success: true, 
+                    data:
+                        {
+                        Token: "dummy_token" 
+                        },
+                })
             })
         );
 

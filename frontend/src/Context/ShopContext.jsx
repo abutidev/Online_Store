@@ -34,7 +34,8 @@ const ShopContextProvider = (props) => {
     useEffect( () =>{
         fetch('http://localhost:4000/allproducts')
         .then((res) => res.json())
-        .then((data) => setAllProduct(data))
+        // .then((data) => setAllProduct(data))
+        .then((data) => setAllProduct(data.data.Products))
         .catch((error) => {
             console.error('API error:', error);
             setError(true);
@@ -52,12 +53,22 @@ const ShopContextProvider = (props) => {
                 },
                 body:"",   
                 }).then((res) => res.json()).then((data)=>{
-                    setCartItems(data);
+                    // setCartItems(data);
+                    // setCartItems(data.data.User.cart);
+
+                    if (data.data && data.data.User && data.data.User.cart) {
+                        setCartItems(data.data.User.cart);
+                      } else {
+                        console.error('Invalid response structure:', data);
+                        setCartItems(getDefaultCart());
+                    }
                 })
             }
     },[]);
    
     const addToCart = (itemId)=>{
+        console.log("called addToCart");
+
         setCartItems((prev) => ({...prev,[itemId]:prev[itemId]+1}));
 
         if(authToken){
@@ -80,6 +91,7 @@ const ShopContextProvider = (props) => {
         
    
     const removeFromCart = (itemId)=>{
+        console.log("called removeFromCart");
 
         setCartItems((prev) => ({...prev,[itemId]:prev[itemId]-1}));
 
@@ -103,6 +115,8 @@ const ShopContextProvider = (props) => {
         }  
 
     const getTotalCartAmount = ()=>{
+        console.log(" called getTotalCartAmount");
+
         let totalAmount = 0;
         for(const item in cartItems){
             if(cartItems[item]>0){
@@ -115,6 +129,9 @@ const ShopContextProvider = (props) => {
     }
 
     const getTotalCartItems = ()=>{
+        console.log(" called getTotalCartItems");
+
+
         let totalItem = 0;
         for(const item in cartItems){
             if(cartItems[item]>0){

@@ -32,9 +32,11 @@ const LoginSignup = () => {
             body: JSON.stringify(formData)
         }).then(response => response.json()).then(data => {
                 responseData = data;
+                // console.log(responseData.data.Token)
             });
         if (responseData.success) {
-            localStorage.setItem('auth_token', responseData.token);
+            localStorage.setItem('auth_token', responseData.data.Token);
+            console.log(localStorage.auth_token);
             window.location.replace('/');
         }else{
             alert(responseData.errors);
